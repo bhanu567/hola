@@ -1,6 +1,0 @@
-{
-  "version": 2,    
-  "installCommand": "npm install --force",
-  "buildCommand": "npm run build",
-  "routes": [{ "src": "/(.*)", "dest": "backend/src/index.js" }]
-}
