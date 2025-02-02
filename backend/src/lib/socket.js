@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import http from "http";
 import express from "express";
 import GroupMessage from "../models/group.model.js";
+import cloudinary from "./cloudinary.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -41,6 +42,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendGroupMessage", async ({ roomId, message }) => {
+    if (message.image) {
+      // Upload base64 image to cloudinary
+      const uploadResponse = await cloudinary.uploader.upload(message.image, {
+        resource_type: "auto",
+        folder: "/hola/group-images",
+      });
+      message.image = uploadResponse.secure_url;
+    }
     const updatedGroupMesssage = await GroupMessage.findOneAndUpdate(
       { _id: roomId },
       {
