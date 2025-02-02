@@ -1,5 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "builds": [{ "src": "backend/src/index.js", "use": "@vercel/node" }],
   "routes": [{ "src": "/(.*)", "dest": "backend/src/index.js" }]
 }
