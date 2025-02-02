@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SidebarSkeleton from "../skeletons/SidebarSkeleton";
+import GroupSidebarSkeleton from "./GroupSidebarSkeleton";
 import { Plus } from "lucide-react";
 import { useGroupData } from "../../store/useGroupStore";
 import DisplayGroupName from "./DisplayGroupName";
@@ -9,7 +9,6 @@ const GroupSideBar = () => {
   const { isGroupDataLoading, createGroup } = useGroupData();
   const [groupName, setGroupName] = useState("");
 
-  if (isGroupDataLoading) return <SidebarSkeleton />;
   function createNewGroup() {
     createGroup(groupName);
     setGroupName("");
@@ -42,7 +41,9 @@ const GroupSideBar = () => {
           <Plus className="size-6"></Plus>
         </button>
       </div>
-      {toggleButton ? (
+      {isGroupDataLoading ? (
+        <GroupSidebarSkeleton />
+      ) : toggleButton ? (
         <div className="overflow-y-auto w-full py-3 flex flex-col justify-center">
           <input
             type="text"

@@ -6,11 +6,13 @@ import GroupMessage from "../models/group.model.js";
 const app = express();
 const server = http.createServer(app);
 
-const io = new Server(server, {
-  cors: {
-    origin: [process.env.CLIENT_URL],
-  },
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: [process.env.CLIENT_URL],
+//   },
+// });
+
+const io = new Server(server);
 
 export function getReceiverSocketId(userId) {
   return userSocketMap[userId];
@@ -31,10 +33,10 @@ io.on("connection", (socket) => {
     io.emit("Typing...", data);
   });
 
-  socket.on("joinRoom", ({ roomId, userId }) => {
-    socket.join(roomId);
-    io.to(roomId).emit("newMemberJoin", {
-      text: `User ${userId} joined room ${roomId}`,
+  socket.on("joinRoom", ({ room, user }) => {
+    socket.join(room.id);
+    io.to(room.id).emit("newMemberJoin", {
+      text: `User ${user} joined room ${room.name}`,
     });
   });
 

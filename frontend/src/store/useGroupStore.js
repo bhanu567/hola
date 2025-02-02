@@ -51,9 +51,11 @@ export const useGroupData = create((set, get) => ({
     set({ selectedGroup });
     socket.off("receiveGroupMessage");
     socket.off("newMemberJoin");
+    console.log("name", useAuthStore.getState().authUser);
+    
     socket.emit("joinRoom", {
-      roomId: selectedGroup._id,
-      userId: useAuthStore.getState().authUser._id,
+      room: { id: selectedGroup._id, name: selectedGroup.name },
+      user: useAuthStore.getState().authUser.fullName,
     });
     socket.on("receiveGroupMessage", ({ response }) => {
       selectedGroup.groupMessages = response.groupMessages;
